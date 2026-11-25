@@ -1,0 +1,50 @@
+generator client {
+  provider = "prisma-client-js"
+}
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+enum AccountType { INDIVIDUAL COMPANY }
+enum WorkspaceRole { OWNER ADMINISTRATOR DEVELOPER ANALYST VIEWER }
+model Developer {
+  id           String   @id @default(cuid())
+  legalName    String
+  email        String   @unique
+  emailVerifiedAt DateTime?
+  passwordHash String
+  accountType  AccountType @default(INDIVIDUAL)
+  countryCode  String
+  companyName  String?
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+  memberships  WorkspaceMember[]
+}
+model Workspace {
+  id        String   @id @default(cuid())
+  name      String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  members   WorkspaceMember[]
+  apps      Application[]
+}
+model WorkspaceMember {
+  id          String @id @default(cuid())
+  developerId String
+  workspaceId String
+  role        WorkspaceRole @default(VIEWER)
+  developer   Developer @relation(fields:[developerId], references:[id], onDelete:Cascade)
+  workspace   Workspace @relation(fields:[workspaceId], references:[id], onDelete:Cascade)
+  createdAt   DateTime @default(now())
+  @@unique([developerId,workspaceId])
+}
+model Application {
+  id          String @id @default(cuid())
+  workspaceId String
+  name        String
+  packageName String
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  workspace   Workspace @relation(fields:[workspaceId], references:[id], onDelete:Cascade)
+  @@unique([workspaceId,packageName])
+}
