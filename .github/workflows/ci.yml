@@ -1,16 +1,37 @@
-name: CI
+
+name: BRITUME DEVELOPERS CI
+
 on:
   push:
   pull_request:
+
+permissions:
+  contents: read
+
 jobs:
   checks:
+    name: Install, Test and Build
     runs-on: ubuntu-latest
+    timeout-minutes: 15
+
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
         with:
-          node-version: 20
+          node-version: '22.12.0'
           cache: npm
-      - run: npm install
-      - run: npm run build
-      - run: npm test
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Run tests
+        run: npm test
+
+      - name: Check code quality
+        run: npm run lint
+
+      - name: Build application
+        run: npm run build
