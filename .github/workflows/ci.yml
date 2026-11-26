@@ -5,12 +5,9 @@ on:
   push:
   pull_request:
 
-permissions:
-  contents: write
-
 concurrency:
   group: britume-developers-ci-${{ github.ref }}
-  cancel-in-progress: false
+  cancel-in-progress: true
 
 jobs:
   checks:
@@ -21,8 +18,6 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
 
       - name: Setup Node.js
         uses: actions/setup-node@v4
@@ -40,72 +35,3 @@ jobs:
 
       - name: Build application
         run: npm run build
-
-      - name: Commit package lockfile
-        if: github.event_name == 'push' && github.ref == 'refs/heads/main'
-        run: |
-          git config user.name "github-actions[bot]"
-          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-
-          git add package-lock.json
-
-          if ! git diff --cached --quiet; then
-            git commit -m "chore: generate npm package lock"
-            git pull --rebase origin main
-            git push origin HEAD:main
-          fi
-name: BRITUME DEVELOPERS CI
-
-on:
-  push:
-  pull_request:
-
-permissions:
-  contents: write
-
-concurrency:
-  group: britume-developers-ci-${{ github.ref }}
-  cancel-in-progress: false
-
-jobs:
-  checks:
-    name: Install, Test and Build
-    runs-on: ubuntu-latest
-    timeout-minutes: 20
-
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
-
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: '22.12.0'
-
-      - name: Install dependencies
-        run: npm install
-
-      - name: Run tests
-        run: npm test
-
-      - name: Check code quality
-        run: npm run lint
-
-      - name: Build application
-        run: npm run build
-
-      - name: Commit package lockfile
-        if: github.event_name == 'push' && github.ref == 'refs/heads/main'
-        run: |
-          git config user.name "github-actions[bot]"
-          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-
-          git add package-lock.json
-
-          if ! git diff --cached --quiet; then
-            git commit -m "chore: generate npm package lock"
-            git pull --rebase origin main
-            git push origin HEAD:main
-          fi
