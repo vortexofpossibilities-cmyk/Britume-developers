@@ -1,0 +1,3 @@
+import { Mail } from 'lucide-react'
+import { PageHeader } from '../../components/ui/PageHeader'
+export function VerifyEmailPage(){return <div className="auth-page"><PageHeader eyebrow="ACCOUNT VERIFICATION" title="Check your inbox" description="Email verification will protect new developer accounts."/><div className="panel auth-panel"><Mail size={28}/><p className="muted">The six-digit verification workflow is planned. Email delivery and code validation are not connected yet.</p><input placeholder="000000" disabled/><button className="primary-button full" disabled>Verify email</button></div></div>}
