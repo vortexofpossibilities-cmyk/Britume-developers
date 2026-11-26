@@ -6,13 +6,13 @@ on:
   pull_request:
 
 permissions:
-  contents: read
+  contents: write
 
 jobs:
   checks:
     name: Install, Test and Build
     runs-on: ubuntu-latest
-    timeout-minutes: 15
+    timeout-minutes: 20
 
     steps:
       - name: Checkout repository
@@ -22,10 +22,20 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: '22.12.0'
-          cache: npm
 
-      - name: Install dependencies
+      - name: Install dependencies and generate lockfile
         run: npm install
+
+      - name: Commit package lockfile
+        if: github.event_name == 'push'
+        run: |
+          git add package-lock.json
+          if ! git diff --cached --quiet; then
+            git config user.name "github-actions[bot]"
+            git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+            git commit -m "chore: generate npm package lock"
+            git push
+          fi
 
       - name: Run tests
         run: npm test
