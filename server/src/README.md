@@ -1,1 +1,0 @@
-Implement authentication, email, Google Play integration, application, release, analytics, reviews, notification and billing services here.
