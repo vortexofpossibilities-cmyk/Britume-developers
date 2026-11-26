@@ -1,1 +1,0 @@
-Enforce workspace membership and role permissions on the server for every protected operation. Hiding UI controls is not authorization.
