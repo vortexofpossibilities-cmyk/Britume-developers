@@ -1,1 +1,0 @@
-HTTP controllers should validate inputs and delegate business rules to services.
