@@ -1,0 +1,3 @@
+import { useNavigate } from 'react-router-dom'
+import { PageHeader } from '../components/ui/PageHeader'
+export function PaymentPage(){const nav=useNavigate();return <><PageHeader eyebrow="BILLING" title="Payment setup" description="Payment processing is not enabled in this version."/><section className="panel notice-panel"><div className="empty-icon">$</div><h2>No payment will be taken</h2><p className="muted">BRITUME currently offers the Free workspace only. Pro and Team billing, checkout and invoices will be added only after a payment provider is securely configured.</p><button className="primary-button" onClick={()=>nav('/')}>Return to dashboard</button></section></>}
