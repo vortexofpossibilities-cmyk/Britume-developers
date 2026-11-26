@@ -1,1 +1,0 @@
-Add authentication, CSRF, rate-limit, validation and authorization middleware here before exposing protected endpoints.
