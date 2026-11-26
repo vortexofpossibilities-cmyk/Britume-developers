@@ -1,0 +1,2 @@
+export type AppDraft = {name:string;packageName:string;platform:string;category:string;shortDescription:string;fullDescription:string;privacyPolicy:string;contentRating:string;testStatus:string;releaseTrack:string;versionName:string;versionCode:string}
+export const emptyDraft:AppDraft={name:'',packageName:'',platform:'Android',category:'',shortDescription:'',fullDescription:'',privacyPolicy:'',contentRating:'Not completed',testStatus:'Not started',releaseTrack:'Internal testing',versionName:'1.0.0',versionCode:'1'}
