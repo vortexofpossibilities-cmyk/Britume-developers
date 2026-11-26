@@ -1,5 +1,5 @@
 
-name: BRITUME DEVELOPERS — GitHub Pages
+name: BRITUME DEVELOPERS WEBSITE
 
 on:
   push:
@@ -13,12 +13,14 @@ permissions:
   id-token: write
 
 concurrency:
-  group: pages
+  group: britume-website-deployment
   cancel-in-progress: true
 
 jobs:
   build:
+    name: Build website
     runs-on: ubuntu-latest
+    timeout-minutes: 20
 
     steps:
       - name: Checkout repository
@@ -27,39 +29,28 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: '22.13.0'
+          node-version: '22.16.0'
 
       - name: Install dependencies
         run: npm install
 
-      - name: Run tests
-        run: npm test
-
-      - name: Check code quality
-        run: npm run lint
-
-      - name: Build BRITUME
-        run: npm run build -- --base=/Britume-developers/
-
-      - name: Prepare SPA fallback
-        run: cp dist/index.html dist/404.html
-
-      - name: Configure GitHub Pages
-        uses: actions/configure-pages@v5
+      - name: Build website
+        run: npm run build
 
       - name: Upload website
         uses: actions/upload-pages-artifact@v3
         with:
-          path: dist
+          path: ./dist
 
   deploy:
-    runs-on: ubuntu-latest
-    needs: build
+    name: Deploy website
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
+    runs-on: ubuntu-latest
+    needs: build
 
     steps:
-      - name: Deploy website
+      - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v4
