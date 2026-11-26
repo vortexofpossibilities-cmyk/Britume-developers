@@ -1,60 +1,29 @@
 # BRITUME DEVELOPERS
 
-A new, separate developer-management console project. It is not the BRITUME Social app.
+React + TypeScript + Vite developer workspace with an initial Supabase integration.
 
-## Stack
-- React + TypeScript + Vite
-- Tailwind CSS
-- Express + TypeScript API
-- PostgreSQL + Prisma
-- React Router
+## Start locally
+Requirements: Node.js 20+ and npm.
 
-## Requirements
-- Node.js 20+
-- npm 10+
-- PostgreSQL 14+ (needed when enabling the backend database)
-
-## Run the frontend
 ```bash
 npm install
 npm run dev
 ```
+
 Open http://localhost:5173.
 
-## Run the API
-Copy `.env.example` to `server/.env`, configure `DATABASE_URL` and a strong `SESSION_SECRET`, then:
-```bash
-npm run dev:server
-```
-API health check: http://localhost:4000/api/health
+## Connect Supabase
+The local `.env.local` contains this project's Supabase URL and publishable key. It is excluded from Git by `.gitignore`. Do not commit private credentials or ever expose a Supabase secret/service-role key.
 
-## Database
-```bash
-npm run db:generate
-npm run db:migrate -- --name init
-```
-The Prisma schema is an initial foundation and will evolve as features are implemented.
+Before testing registration or application records, run the SQL migration in `supabase/migrations/202611260001_initial_schema.sql` from the Supabase SQL Editor. Then enable Email authentication and configure the email template to use `{{ .Token }}` for the six-digit OTP. See `docs/SUPABASE_SETUP.md`.
 
-## Build and checks
-```bash
-npm run build
-npm test
-npm run lint
-```
+## Current working scope
+- Root npm project setup and Vite scripts.
+- Supabase browser client.
+- Email/password signup and six-digit OTP verification.
+- Profile creation trigger and RLS-protected per-user application table.
+- Application create, list and delete UI.
+- Existing dashboard, navigation and screen shells retained.
 
-## Important implementation status
-This ZIP is the initial project scaffold. Navigation, theme switching, page shells and the API health endpoint are implemented. Registration, email delivery, Google Play OAuth/API operations, uploads, analytics, review replies, subscriptions and production security integrations are **not yet live**. They require provider configuration, backend implementation, testing and policy review. No Google password should ever be collected.
-
-## Security before deployment
-- Use HTTPS and secure, HTTP-only cookies.
-- Store password hashes using a modern password-hashing algorithm (Argon2id recommended).
-- Keep secrets only in server environment variables / a secret manager.
-- Use OAuth state and PKCE where applicable; request least-privilege scopes.
-- Encrypt provider refresh tokens at rest and support revocation.
-- Add rate limits, CSRF protections, audit logging, backups and account deletion workflows.
-- Never commit `.env` files or signing keys.
-
-## Project phases
-1. Foundation: app shell, identity, database, authentication and Google connection.
-2. Developer tools: applications, app overview, releases, analytics and reviews.
-3. Complete platform: notifications, teams, security, settings, support and billing.
+## Not yet live
+Login and password reset, teams, workspace sharing, Google Play OAuth/API, app bundle uploads, publishing, Play analytics/reviews, notifications, billing, support ticket submission and production deployment are not implemented. The Express server remains a basic API foundation.
