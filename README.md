@@ -1,29 +1,19 @@
 # BRITUME DEVELOPERS
 
-React + TypeScript + Vite developer workspace with an initial Supabase integration.
+A React + TypeScript + Vite developer workspace foundation. It provides account screens (Supabase configuration required), a dashboard, application records, a seven-stage guided application setup, and workspace navigation.
 
-## Start locally
-Requirements: Node.js 20+ and npm.
+## Run locally
+1. Install Node.js 22.13 or newer.
+2. Run `npm install`.
+3. Copy `.env.example` to `.env.local` and set `VITE_SUPABASE_URL` and `VITE_SUPABASE_ANON_KEY` if using Supabase authentication and cloud records.
+4. Run `npm run dev`.
 
-```bash
-npm install
-npm run dev
-```
+Without Supabase configuration, the guided application wizard stores app drafts and demo app records in this browser only. With Supabase configured, it saves the supported application fields to the `applications` table.
 
-Open http://localhost:5173.
+## Important implementation boundaries
+- Free workspace selection is available. Pro/Team are informational placeholders; no checkout or payment processing is active.
+- The guided setup is a BRITUME checklist and record-keeping workflow. It does not submit Google Play declarations, upload APK/AAB files, run tests, or publish apps.
+- Google Play OAuth, Android Publisher API integration, analytics ingestion, reviews sync, and live notifications are not implemented yet.
+- GitHub Pages hosts the static frontend only. It does not run the Express server. A hosted backend is required for server-side functionality.
 
-## Connect Supabase
-The local `.env.local` contains this project's Supabase URL and publishable key. It is excluded from Git by `.gitignore`. Do not commit private credentials or ever expose a Supabase secret/service-role key.
-
-Before testing registration or application records, run the SQL migration in `supabase/migrations/202611260001_initial_schema.sql` from the Supabase SQL Editor. Then enable Email authentication and configure the email template to use `{{ .Token }}` for the six-digit OTP. See `docs/SUPABASE_SETUP.md`.
-
-## Current working scope
-- Root npm project setup and Vite scripts.
-- Supabase browser client.
-- Email/password signup and six-digit OTP verification.
-- Profile creation trigger and RLS-protected per-user application table.
-- Application create, list and delete UI.
-- Existing dashboard, navigation and screen shells retained.
-
-## Not yet live
-Login and password reset, teams, workspace sharing, Google Play OAuth/API, app bundle uploads, publishing, Play analytics/reviews, notifications, billing, support ticket submission and production deployment are not implemented. The Express server remains a basic API foundation.
+See `docs/` and `supabase/migrations/` for setup notes.
