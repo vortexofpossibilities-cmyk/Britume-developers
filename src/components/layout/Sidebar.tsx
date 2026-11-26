@@ -36,7 +36,7 @@ const navigation = [
   }
 ]
 
-export default function Sidebar() {
+export function Sidebar() {
   return (
     <aside className="sidebar">
       <div className="sidebar-brand">
@@ -80,3 +80,5 @@ export default function Sidebar() {
     </aside>
   )
 }
+
+export default Sidebar
