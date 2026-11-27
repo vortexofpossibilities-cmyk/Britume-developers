@@ -24,6 +24,7 @@ function StageCard({ number, title, description, icon: Icon, status, action, onC
 export function DashboardPage() {
   const navigate = useNavigate()
   const [savedSections, setSavedSections] = useState<string[]>([])
+  const [showAllTasks, setShowAllTasks] = useState(false)
   useEffect(() => { try { const answers = JSON.parse(localStorage.getItem('britume.setup.answers') || '{}') as Record<string,Record<string,string>>; setSavedSections(Object.keys(answers).filter(key => Object.values(answers[key] || {}).some(value => value.trim().length > 0))) } catch { setSavedSections([]) } }, [])
   const progress = Math.round((savedSections.length / setupTasks.length) * 100)
   return <>
@@ -37,14 +38,15 @@ export function DashboardPage() {
     <div className="publish-section-title"><div><h2>Get ready to publish</h2><p>Move through each stage in order. Optional tools are clearly marked.</p></div><span className="neutral-chip">Guided workflow</span></div>
     <div className="publish-stage-list">
       <StageCard number="01" title="Internal testing" description="Quickly share early builds with your own device or trusted testers." icon={Smartphone} status="OPTIONAL · EARLY QUALITY CHECKS" action="Set up internal testing" onClick={() => navigate('/testing?track=internal')} />
-      <StageCard number="02" title="Finish setting up your app" description="Provide app information, complete declarations and create your store listing." icon={ClipboardCheck} status="REQUIRED · 11 SETUP SECTIONS" action="Complete app setup" onClick={() => navigate('/setup/privacy-policy')} />
+      <StageCard number="02" title="Quick app setup" description="Answer a few short questions so BRITUME can tailor your preparation checklist." icon={ClipboardCheck} status="PERSONALISED · ABOUT 2 MINUTES" action="Start quick setup" onClick={() => navigate('/quick-setup')} />
       <StageCard number="03" title="Closed testing" description="Choose countries, invite testers, distribute a release and collect feedback." icon={FlaskConical} status="REQUIRED FOR PRODUCTION READINESS" action="Set up closed testing" onClick={() => navigate('/testing?track=closed')} />
       <StageCard number="04" title="Production access" description="Review your testing results and prepare your production access application." icon={Rocket} status="LOCKED UNTIL REQUIREMENTS ARE MET" action="View production requirements" onClick={() => navigate('/production')} />
     </div>
 
     <div className="publish-columns">
       <section className="clay-card publish-checklist"><div className="publish-section-title compact"><div><h2>Finish setting up your app</h2><p>App content and store presentation</p></div><span className="neutral-chip">{savedSections.length} / 11 saved</span></div>
-        {setupTasks.map(task => { const Icon = task.icon; return <button className="setup-task-row" key={task.id} onClick={() => navigate(`/setup/${task.id}`)}><span className="setup-task-icon"><Icon size={17}/></span><span className="setup-task-copy"><strong>{task.title}</strong><small>{task.description}</small></span><span className="task-pending">{savedSections.includes(task.id) ? <><CheckCircle2 size={15}/> Saved</> : <><Circle size={15}/> Not started</>}</span><ArrowRight size={16} className="task-chevron"/></button> })}
+        {setupTasks.slice(0, showAllTasks ? setupTasks.length : 5).map(task => { const Icon = task.icon; return <button className="setup-task-row" key={task.id} onClick={() => navigate(`/setup/${task.id}`)}><span className="setup-task-icon"><Icon size={17}/></span><span className="setup-task-copy"><strong>{task.title}</strong><small>{task.description}</small></span><span className="task-pending">{savedSections.includes(task.id) ? <><CheckCircle2 size={15}/> Saved</> : <><Circle size={15}/> Not started</>}</span><ArrowRight size={16} className="task-chevron"/></button> })}
+        <button type="button" className="show-more-button" onClick={() => setShowAllTasks(value => !value)}>{showAllTasks ? 'Hide extra sections' : `See more (${setupTasks.length - 5} more)`} <ArrowRight size={15}/></button>
       </section>
       <aside className="clay-card production-card"><span className="production-icon"><LockKeyhole size={22}/></span><span className="eyebrow">PRODUCTION READINESS</span><h2>Build confidence before launch.</h2><p>Track the closed-testing requirements shown in your Google Play Console and prepare answers about your testing experience.</p><div className="requirement-metric"><strong>0 / 12</strong><span>testers opted in</span></div><div className="requirement-metric"><strong>0 / 14 days</strong><span>minimum testing period</span></div><div className="production-note">Google Play requirements vary by account and app. Confirm the current requirements in your Play Console before applying.</div><button className="outline-button" onClick={() => navigate('/production')}>View production checklist <ArrowRight size={15}/></button></aside>
     </div>
