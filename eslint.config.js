@@ -9,13 +9,13 @@ export default tseslint.config(
     ignores: ['dist', 'node_modules', 'server'],
   },
 
-  // Enable the TypeScript parser for .ts and .tsx files.
   ...tseslint.configs.recommended,
 
   {
     files: ['**/*.{ts,tsx}'],
     languageOptions: {
-      ecmaVersion: 2020,
+      ecmaVersion: 'latest',
+      sourceType: 'module',
       globals: globals.browser,
       parserOptions: {
         ecmaFeatures: {
