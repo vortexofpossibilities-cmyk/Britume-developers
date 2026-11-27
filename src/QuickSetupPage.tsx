@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
 import { ArrowLeft, ArrowRight, CheckCircle2, ClipboardCheck } from 'lucide-react'
-import { PageHeader } from '../components/ui/PageHeader'
+import { PageHeader } from './components/ui/PageHeader'
 
 type QuickAnswers = {
   appName: string
