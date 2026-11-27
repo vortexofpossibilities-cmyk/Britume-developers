@@ -20,6 +20,7 @@ import { CreateApplicationPage } from './pages/CreateApplicationPage'
 import { SetupTaskPage } from './pages/SetupTaskPage'
 import { TestingPage } from './pages/TestingPage'
 import { ProductionPage } from './pages/ProductionPage'
+import { QuickSetupPage } from './pages/QuickSetupPage'
 import { supabase, supabaseConfigured } from './lib/supabase'
 
 function SetupTaskRoute() {
@@ -95,6 +96,7 @@ export default function App() {
         <Route path="/plans" element={<PlansPage />} />
         <Route path="/payment" element={<PaymentPage />} />
         <Route path="/" element={<DashboardPage />} />
+        <Route path="/quick-setup" element={<QuickSetupPage />} />
         <Route
           path="/applications/new"
           element={<CreateApplicationPage />}
